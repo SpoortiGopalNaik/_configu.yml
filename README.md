@@ -1,21 +1,19 @@
 # portpolio.github.io
 ## Portfolio
 
-### Hello, I'm [Your Name] 👋
+### Hello, I'm [Spoorti G Naik] 👋
 
 I am passionate about technology and problem-solving. Here's a glimpse of my work:
 
 ## 🛠️ Projects
-- **Project 1**: A short description of your project.
-- **Project 2**: A short description of another project.
+- **Project 1**: The Sugarcane Cane Management System is a comprehensive solution designed to streamline and optimize the management of sugarcane cultivation, harvesting, and processing operations. This project focuses on providing a centralized platform to manage the lifecycle of sugarcane production, enhancing efficiency and productivity for farmers, mills, and stakeholders.
 
 ## 🚀 Skills
-- C++, Python, JavaScript
+- C++, Python, C
 - Data Structures and Algorithms
-- Web Development (React.js, Node.js)
 
 ## 🌐 Find Me Online
-- [GitHub](https://github.com/your-github-username)
+- [GitHub](https://github.com/your-github-SpoortiGopalNaik)
 - [LinkedIn](https://linkedin.com/in/your-linkedin-profile)
 
 ## Portfolio Topic
@@ -24,15 +22,15 @@ I am passionate about technology and problem-solving. Here's a glimpse of my wor
 <dt>Course Name</dt>
 <dd>Algorithmic Problem Solving</dd>
 <dt>Course Code</dt>
-<dd>Course Code Placeholder</dd>
+<dd>24ECSC205</dd>
 <dt>Name</dt>
-<dd>Your Name</dd>
+<dd>Spoorti G Naik</dd>
 <dt>SRN</dt>
-<dd>Your SRN</dd>
+<dd>02FE23BCS179</dd>
 <dt>Course Instructor</dt>
-<dd>Instructor Name Placeholder</dd>
+<dd>Vaishali.Parab</dd>
 <dt>University</dt>
-<dd>Your University Name</dd>
+<dd>KLE DR M.S.SHESHAGIRI COLLEGE OF ENGINEERING AND TECHNOLOGY</dd>
 <dt>Portfolio Topic/Domain</dt>
 <dd>Google</dd>
 </dl>

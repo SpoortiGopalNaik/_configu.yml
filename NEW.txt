@@ -1,0 +1,2954 @@
+#include <bits/stdc++.h>
+#include <conio.h>
+using namespace std;
+double ratePerKm=50;
+
+
+
+class Farmer
+{
+public:
+
+    string name;
+    int id;
+    double load;
+    int factoryID;
+    string region; // Region attribute
+    bool continueSelling;
+
+    Farmer(string n, int i, double l, int fID, string r)
+
+        : name(n), id(i), load(l), factoryID(fID), region(r), continueSelling(false)
+    {
+
+    }
+
+    void updateLoad(double newLoad)
+    {
+
+        if (newLoad < 0)
+        {
+
+            cout << "Load cannot be negative.\n";
+        }
+        else
+        {
+            load = newLoad;
+            cout << "Load updated successfully.\n";
+        }
+
+    }
+void changeRegion(string newRegion)
+    {
+        vector<string> validRegions =
+
+        {"North", "East", "West", "South"};
+
+        if (find(validRegions.begin(), validRegions.end(), newRegion) == validRegions.end())
+        {
+
+            cout << "Invalid region. Please provide a valid region.\n";
+        }
+
+        else
+        {
+            region = newRegion;
+            cout << "Region changed successfully.\n";
+        }
+}
+
+    void startSelling()
+    {
+        continueSelling = true;
+        cout << name << " has started selling again.\n";
+    }
+
+
+    void stopSelling()
+    {
+        continueSelling = false;
+        cout << name << " has stopped selling.\n";
+    }
+
+};
+
+    map<string, int> inventory;
+     // Sales map with product name and units sold
+    map<string, int> sales;
+     // Track production efficiency of different products
+    map<string, double> productionEfficiency;
+    vector<string> staffList;
+    // List of staff working at the factory
+    double totalRevenue = 0;
+
+     // Revenue generated from selling products
+    int totalSugarcaneReceived = 0;
+     // Total sugarcane received by the factory (in tons)
+    int totalSugarProduced = 0;
+    // Total sugar produced (in tons)
+
+
+    // Functions for factory operations
+    void receiveSugarcane(int quantity, float price);
+
+    void produceSugar(int quantity);
+
+    void sellToMarket(string product, int quantity, double price);
+
+    void displayInventory();
+
+    void displaySales();
+
+    void addStaff(string staffName);
+
+    void removeStaff(string staffName);
+
+    void displayStaff();
+
+    void calculateProductionEfficiency(int quantityProduced, int inputCane);
+
+    void displayProductionEfficiency();
+
+    void calculateRevenue();
+
+    void displayfactoryDetails();
+
+
+class Supplier
+{
+public:
+    string name;
+    string location;
+    int rating;
+     // Supplier rating based on quality, delivery, etc.
+
+    Supplier(string name, string location, int rating) : name(name), location(location), rating(rating) {}
+
+    void displaySupplierInfo() const {
+        cout << "Supplier Name: " << name << ", Location: " << location << ", Rating: " << rating << "/5" << endl;
+    }
+};
+
+// Class to represent customers
+
+class Customer
+ {
+public:
+    string name;
+    string contact;
+    vector<string> productsOrdered;
+    double totalBill = 0;
+
+    Customer(string name, string contact) : name(name), contact(contact) {}
+
+    void displayCustomerInfo() const {
+        cout << "Customer Name: " << name << ", Contact: " << contact << endl;
+    }
+
+    void addOrder(string product, int quantity, double price) {
+        productsOrdered.push_back(product);
+        totalBill += (quantity * price);
+    }
+
+    void displayOrders() {
+        cout << "Orders placed by " << name << ": " << endl;
+        for (auto& order : productsOrdered) {
+            cout << order << endl;
+        }
+        cout << "Total Bill: " << totalBill << endl;
+    }
+};
+class driverpass
+{
+public:
+    string dname;
+    string dpass;
+
+    void write_to_filedpass(ofstream &outfile);
+    void read_from_filedpass(ifstream &infile);
+};
+
+void driverpass::write_to_filedpass(ofstream &outfile)
+{
+    outfile << dname << endl;
+    outfile << dpass << endl;
+}
+
+void driverpass::read_from_filedpass(ifstream &infile)
+{
+    getline(infile, dname);
+    getline(infile, dpass);
+}
+
+
+class factoryrequest
+{
+    public:
+        int fid;
+        string farmername;
+        int weight;
+
+        void write_to_filer(ofstream &outfile);
+        void read_from_filer(ifstream &infile);
+};
+
+void factoryrequest::write_to_filer(ofstream &outfile)
+{
+    outfile << fid << endl;
+    outfile << farmername << endl;
+    outfile << weight << endl;
+}
+
+void factoryrequest::read_from_filer(ifstream &infile)
+{
+    infile>> fid;
+    infile.ignore();
+    getline(infile, farmername);
+    infile>>weight;
+    infile.ignore();
+}
+class truckreq
+{
+public:
+    int tid;
+    string farmername;
+    string src;
+    string dest;
+    double distance;
+
+
+    void write_to_filetru(ofstream &outfile);
+    void read_from_filetru(ifstream &infile);
+};
+
+void truckreq::write_to_filetru(ofstream &outfile)
+{
+    outfile << tid << endl;
+    outfile << farmername << endl;
+    outfile << src << endl;
+    outfile << dest << endl;
+    outfile << distance << endl;
+
+}
+
+void truckreq::read_from_filetru(ifstream &infile)
+{
+    infile >> tid;
+    infile.ignore();
+    getline(infile, farmername);
+    getline(infile, src);
+    getline(infile, dest);
+    infile >> distance;
+    infile.ignore();
+
+}
+
+class trucks
+{
+public:
+    int truckid;
+    string driver;
+    string truckno;
+    int load;
+    string tcontact;
+    string status;
+    int factiid;
+
+    void write_to_filet(ofstream &outfile);
+    void read_from_filet(ifstream &infile);
+};
+
+
+void trucks::write_to_filet(ofstream &outfile)
+{
+    outfile << truckid << endl;
+    outfile << driver << endl;
+    outfile << truckno << endl;
+    outfile << load << endl;
+    outfile << tcontact << endl;
+    outfile << status << endl;
+    outfile << factiid << endl;
+
+}
+
+void trucks::read_from_filet(ifstream &infile)
+{
+    infile>>truckid;
+    infile.ignore();
+    getline(infile, driver);
+
+    getline(infile, truckno);
+
+    infile>>load;
+    infile.ignore();
+    getline(infile, tcontact);
+
+    getline(infile, status);
+
+    infile>>factiid;
+    infile.ignore();
+}
+
+
+class factory
+{
+public:
+    int factid;
+    string factname;
+    string taluka;
+    string address;
+    string contact;
+
+    void write_to_filef(ofstream &outfile);
+    void read_from_filef(ifstream &infile);
+};
+
+void factory::write_to_filef(ofstream &outfile)
+{
+    outfile << factid << endl;
+    outfile << factname << endl;
+    outfile << taluka << endl;
+    outfile << address << endl;
+    outfile << contact << endl;
+}
+
+void factory::read_from_filef(ifstream &infile)
+{
+    infile>>factid;
+    infile.ignore();
+    getline(infile, factname);
+    getline(infile, taluka);
+    getline(infile, address);
+    getline(infile, contact);
+}
+
+
+class farm
+{
+public:
+    string fname;
+    string fpass;
+
+    void write_to_filex(ofstream &outfile);
+    void read_from_filex(ifstream &infile);
+};
+
+void farm::write_to_filex(ofstream &outfile)
+{
+    outfile << fname << endl;
+    outfile << fpass << endl;
+}
+
+void farm::read_from_filex(ifstream &infile)
+{
+    getline(infile, fname);
+    getline(infile, fpass);
+}
+
+class dist
+{
+public:
+    int dis[100];
+
+    void write_to_filed(ofstream &outfile);
+    void read_from_filed(ifstream &infile);
+};
+
+void dist::write_to_filed(ofstream &outfile)
+{
+    for (int i=1;i<=26;i++)
+    {
+        outfile << dis[i];
+    }
+    outfile << endl;
+}
+
+void dist::read_from_filed(ifstream &infile)
+{
+    for (int i=1;i<=26;i++)
+    {
+        infile >> dis[i];
+        infile.ignore();
+    }
+}
+
+
+
+class village
+{
+public:
+    int villid;
+    string villname;
+
+    void write_to_filev(ofstream &outfile);
+    void read_from_filev(ifstream &infile);
+};
+
+void village::write_to_filev(ofstream &outfile)
+{
+    outfile << villid << endl;
+    outfile << villname << endl;
+}
+
+void village::read_from_filev(ifstream &infile)
+{
+    infile >> villid;
+    infile.ignore();
+    getline(infile, villname);
+}
+
+
+
+void welcome(string x)
+{
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "_";
+    }
+    cout<<endl<<endl;
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "*";
+    }
+    cout << "\n\n\t\t\t\t\t\tWELCOME\n\n";
+    cout << "\t\t\t\t\t\t"<<x<<"\n\n";
+    cout << "\t\t\t\t ENJOY YOUR JOURNEY WITH OUR PROGRAM!\n\n";
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "*";
+    }
+    cout<<endl;
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "_";
+    }
+    cout << "\n\n";
+}
+
+
+void logintheme()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "_";
+    }
+    cout<<endl<<endl;
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "*";
+    }
+    cout << "\n\n\t\t\t\t\t\tPLEASE LOGIN\n\n";
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "*";
+    }
+    cout<<endl;
+    for (int i = 0; i < 100; i++)
+    {
+        cout << "_";
+    }
+    cout<<endl<<endl;
+}
+vector<factory> factories;
+vector<Supplier> suppliers;
+vector<Customer> customers;
+vector<factoryrequest> farmers;
+
+// Function to add a new factory
+
+
+// Function to display all factories
+
+
+
+// Function to get factory by ID
+
+
+
+// Function to manage receiving sugarcane
+
+void receiveSugarcane(int quantity, float price,int fid)
+{
+
+    factoryrequest request[101];
+    ifstream infile;
+    string filename = "REQUEST.txt";
+    infile.open(filename);
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for writing!" << endl;
+        return ;
+    }
+    for(int i=0;i<101;i++)
+    {
+        request[i].read_from_filer(infile);
+        if(request[i].fid==fid)
+        {
+            quantity+=request[i].weight;
+        }
+    }
+    infile.close();
+    inventory["sugarcane"] += quantity;
+            totalSugarcaneReceived += quantity;
+    cout << "Received " << quantity << " tons of sugarcane at " << price << " per ton." << endl;
+}
+
+// Function to manage sugar production
+
+void produceSugar(int quantity)
+{
+    if (inventory["sugarcane"] >= quantity)
+        {
+        inventory["sugarcane"] -= quantity;
+        inventory["sugar"] += quantity * 0.9; // Assuming 90% of sugarcane converts to sugar
+        totalSugarProduced += quantity * 0.9;
+        cout << "Produced " << quantity * 0.9 << " tons of sugar from " << quantity << " tons of sugarcane." << endl;
+    }
+    else
+    {
+        cout << "Not enough sugarcane for production." << endl;
+    }
+}
+
+// Function to manage selling to market
+
+void sellToMarket(string product, int quantity, double price)
+ {
+    if (inventory[product] >= quantity)
+    {
+        inventory[product] -= quantity;
+        sales[product] += quantity;
+        totalRevenue += quantity * price;
+        cout << "Sold " << quantity << " tons of " << product << " at " << price << " per ton." << endl;
+    } else {
+        cout << "Not enough " << product << " for sale." << endl;
+    }
+}
+
+// Function to display factory inventory
+
+void displayInventory(string name)
+{
+    cout << "Inventory for " << name << ": " << endl;
+    for (const auto& item : inventory) {
+        cout << item.first << ": " << item.second << " tons" << endl;
+    }
+}
+
+// Function to display factory sales
+
+void displaySales(string name)
+{
+    cout << "Sales for " << name << ": " << endl;
+    for (const auto& sale : sales) {
+        cout << sale.first << ": " << sale.second << " tons sold" << endl;
+    }
+    cout << "Total Revenue: " << totalRevenue << endl;
+}
+
+// Function to add staff to the factory
+
+void addStaff(string staffName)
+ {
+    staffList.push_back(staffName);
+    cout << staffName << " added to the staff list." << endl;
+}
+
+// Function to remove staff from the factory
+
+void removeStaff(string staffName)
+{
+    auto it = find(staffList.begin(), staffList.end(), staffName);
+    if (it != staffList.end()) {
+        staffList.erase(it);
+        cout << staffName << " removed from the staff list." << endl;
+    } else {
+        cout << staffName << " not found in the staff list." << endl;
+    }
+}
+
+// Function to display the staff list
+
+void displayStaff(string name)
+{
+    cout << "Staff working at " << name << ": " << endl;
+    for (const auto& staff : staffList) {
+        cout << staff << endl;
+    }
+}
+
+// Function to calculate production efficiency
+
+void calculateProductionEfficiency(int quantityProduced, int inputCane)
+{
+    double efficiency = (double)quantityProduced / inputCane * 101;
+    productionEfficiency["sugar"] = efficiency;
+    cout << "Production Efficiency: " << efficiency << "%" << endl;
+}
+
+// Function to display production efficiency
+
+void displayProductionEfficiency()
+{
+    for (const auto& efficiency : productionEfficiency)
+        {
+        cout << efficiency.first << ": " << efficiency.second << "%" << endl;
+        }
+}
+
+// Function to calculate total revenue for the factory
+
+void calculateRevenue(string name) {
+    cout << "Total Revenue for " << name << ": " << totalRevenue << endl;
+}
+
+// Function to display all farmer details for a given factory
+
+void displayFarmers(int fid)
+{
+    factoryrequest request[101];
+    ifstream infile;
+    string filename = "REQUEST.txt";
+    infile.open(filename);
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for writing!" << endl;
+        return ;
+    }
+    for(int i=0;i<101;i++)
+    {
+        request[i].read_from_filer(infile);
+        if(request[i].fid==fid)
+        {
+            cout<<"farmer name:"<<request[i].farmername<<endl;
+            cout<<"weight:"<<request[i].weight<<endl<<endl;
+        }
+    }
+    infile.close();
+}
+
+// Function to add a new supplier
+
+void addSupplier(string name, string location, int rating)
+{
+    suppliers.push_back(Supplier(name, location, rating));
+}
+
+// Function to display all suppliers
+
+void displaySuppliers() {
+    for (const auto& supplier : suppliers)
+ {
+        supplier.displaySupplierInfo();
+    }
+
+}
+
+// Function to add a new customer
+
+void addCustomer(string name, string contact)
+{
+    customers.push_back(Customer(name, contact));
+}
+
+// Function to display all customers
+
+void displayCustomers() {
+    for (const auto& customer : customers)
+    {
+        customer.displayCustomerInfo();
+    }
+
+}
+    // Definition of displayfactoryDetails
+
+void displayfactoryDetails() {
+     vector<tuple<string, int, int, int>> farmerData = {
+        {"Abhishek", 1, 150, 101},
+        {"Rahul", 2, 180, 102},
+        {"Sita", 3, 120, 103},
+        {"Rajesh", 4, 170, 104},
+        {"Anita", 5, 180, 105},
+        {"Vikas", 6, 200, 106},
+        {"Sunita", 7, 180, 107},
+        {"Deepak", 8, 170, 108},
+        {"Pooja", 9, 150, 109},
+        {"Arun", 10, 200, 110},
+        {"Kiran", 11, 160, 111},
+        {"Manoj", 12, 170, 112},
+        {"Geeta", 13, 190, 113},
+        {"Nitin", 14, 160, 114},
+        {"Ramesh", 15, 180, 115},
+        {"Neha", 16, 140, 116},
+        {"Amit", 17, 170, 117},
+        {"Sneha", 18, 200, 118},
+        {"Vivek", 19, 140, 119},
+        {"Rohit", 20, 170, 120},
+        {"Prakash", 21, 150, 121},
+        {"Meera", 22, 150, 122},
+        {"Sanjay", 23, 140, 123},
+        {"Anjali", 24, 160, 124},
+        {"Kailash", 25, 170, 125},
+        {"Tina", 26, 160, 126},
+        {"Varun", 27, 160, 101},
+        {"Asha", 28, 180, 102},
+        {"Ravi", 29, 120, 103},
+        {"Komal", 30, 160, 104},
+        {"Shankar", 31, 180, 105},
+        {"Payal", 32, 200, 106}
+    };
+
+    // Predefined factory details
+    vector<tuple<int, string, string, string>> factoryDetails = {
+        {101, "ATHANI_SUGARS_LIMITED", "ATHANI, VISHRIUANINA_NAGAR, PO_NAVALIHAL", "(08338) 350101, 350101"},
+        {102, "THE_KRISHNA_SAHAKARI_SAKKARE_KARKHANE_NIYAMIT", "ATHANI, PO. SANKONATTI, TALUK ATHANI DIST", "(08289) 255000"},
+        {103, "SHREE_RENUKA_SUGARS_LTD. (UNIT-4)", "ATHANI, RS 377/1 BURLATTI AGE, PO KOKATUR", "(08289) 289222"},
+        {104, "SHIRAGUPPI_SUGAR_WORKS_LTD.", "ATHANI, KAGWAD", "(08339) 26405"},
+        {105, "SHRI_MALAPRABHA_S.S.K. NIYAMIT", "BAILHONGAL, MALAPRABHA M.K., HUBLI BAILHONGAL", "(08288) 274441"},
+        {106, "SHREE_SOMESHWAR_SAHAKARI_SAKKARE_KARKHANE_NIYAMIT", "BAILHONGAL, SITE AT SIDDASAMODRA POST, BELAWADI, BAILHONGAL", "(81974) 99292"},
+        {107, "THE_MARKANDEYA_CO-OP. SUGAR MILLS LTD.", "BELGAUM, F.S. NO. 98, 99, A.L.P., KAKATI", "N.A."},
+        {108, "BELGAUM SUGARS PVT. LTD.", "BELGAUM, A/P HUDALI", "(0831) 2532000, 2419003"},
+        {109, "ARIHANT SUGAR INDUSTRIES LIMITED (OM SUGARS)", "CHIKODI, DHARSHREE, SY. NO. 2, AL/PO. JAMAPUR", "96060 165049, 5331199"},
+        {110, "VENKATESHWARA POWER PROJECT LTD", "CHIKODI, A/P. BEDAKIHAL, NIPPANI", "(08338) 257001"},
+        {111, "CHIDANAND BASAPRABHU KORE SAHAKARI SAKKARE KARKHANE NIYAMIT (SHREE DOODHAGANGA KRISHNA S.SK. NIYAMIT)", "CHIKODI, SHANTAPPANNA MIRAJI NAGAR", "591 247, (338) 257200"},
+        {112, "THE GHATAPRABHA SAHAKARI SAKKARE KARKHANE NIYAMIT", "GOKAK, GOKAK", "(08332) 292053, 292101, 292002"},
+        {113, "SHRI RENUKA SUGARS (GOKAK SUGAR)", "GOKAK, KOLAVI", "(08332) 264161"},
+        {114, "SATISH SUGARS LTD.", "GOKAK, HUNSHYAL P.G., SANGANKERI YADWAD ROAD, HUNASHYAL P.G.", "(08332) 221101"},
+        {115, "SOUBHAGYA LAXMI SUGARS LTD.", "GOKAK, HIRENANDI", "(08332) 2221302"},
+        {116, "VISHWARAJ SUGAR INDUSTRIES LIMITED", "HUKKERI, BELLAD BAGEWADI", "(08333) 251251"},
+        {117, "SHRI SANGAM SAHAKARI SAKKARE KARKHANE NIYAMIT", "HUKKERI, HIDKAL DAM, TAL HUKKERI", "89048 12680"},
+        {118, "LAILA SUGARS PVT. LTD.", "KHANAPUR, KUPATGIRI", "(08336) 222928"},
+        {119, "SHREE HALASIDHANATH SAHAKARI SAKHAR KARKHANA LTD", "NIPANI, SHANKARANANDNAGAR, NIPANI", "(08338) 220355, 221526"},
+        {120, "SHREE RENUKA SUGARS LTD. (UNIT-3)", "RAIBAG, BAVACHI, PO MEKHALI", "(08331) 270800"},
+        {121, "SHIVSHAKTI SUGARS LTD.", "RAIBAG, SOUNDATTI", "(08331) 227657"},
+        {122, "INDIAN CANE POWER LTD. (UNIT: ALAGAWADI BIRESHWAR SUGARS)", "RAIBAG, SY. NO. 106, AGE ALAGAWADI", "09900 543266, 67"},
+        {123, "E.I.D. PARRY (INDIA) LTD.", "RAMDURG, KHANPET (LESSEE OF DHANALAXMI S.S.K. NIYAMIT, KHANPETH), A/P KHANPET", "(08335) 253486"},
+        {124, "ARIHANT SUGAR INDUSTRIES LTD. (LESSEE OF SHRI SHIVSAGAR SUGAR AND AGRO PRODUCTS LTD.)", "RAMDURG, SHIVSAGAR SUGAR, A/P UDAPUDI, TEH RAMDURG", "N.A."},
+        {125, "SHREE RENUKA SUGARS LTD.", "SAUNDATTI, 367/1, MANOLI", "(08330) 278700, 01 TO 08"},
+        {126, "HARSHA SUGARS LTD.", "SAUNDATTI, SOUNDATTI", "(0831) 2459977"}
+    };
+
+    int fid;
+    cout << "Enter factory ID: ";
+    cin >> fid;
+
+    // Find and display factory details
+    bool factoryFound = false;
+    for (const auto& factory : factoryDetails) {
+        int id;
+        string name, location, contact;
+
+        // Unpack the tuple explicitly
+        tie(id, name, location, contact) = factory;
+
+        if (id == fid) {
+                for(int i=0;i<30;i++)
+         {
+               cout<<"-";
+         }
+         for(int i=0;i<30;i++)
+        {
+          cout<<"*";
+        }
+         for(int i=0;i<30;i++)
+        {
+            cout<<"-";
+        }
+            cout << "\nfactory Details:" << endl;
+            cout << "factory ID: " << id << endl;
+            cout << "factory Name: " << name << endl;
+            cout << "Location: " << location << endl;
+            cout << "Contact: " << contact << endl;
+
+            factoryFound = true;
+            break;
+        }
+    }
+
+    if (!factoryFound) {
+        cout << "factory with ID " << fid << " not found." << endl;
+
+    }
+
+    // Calculate total sugarcane for the factory
+    int totalSugarcane = 0;
+    for (const auto& data : farmerData) {
+        if (get<3>(data) == fid) {
+            totalSugarcane += get<2>(data);
+        }
+    }
+
+    // Display total sugarcane
+    cout << "Total Sugarcane in Tons: " << totalSugarcane << endl;
+    for(int i=0;i<30;i++)
+         {
+               cout<<"-";
+         }
+         for(int i=0;i<30;i++)
+        {
+          cout<<"*";
+        }
+         for(int i=0;i<30;i++)
+        {
+            cout<<"-";
+        }
+
+
+}
+
+
+// Function to add farmers' data
+
+/*void addFarmers() {
+   farmers.push_back(Farmer("Abhishek", 1, 150, 101));
+    farmers.push_back(Farmer("Rahul", 2, 180, 102));
+    farmers.push_back(Farmer("Sita", 3, 120, 103));
+    farmers.push_back(Farmer("Rajesh", 4, 170, 104));
+    farmers.push_back(Farmer("Anita", 5, 180, 105));
+    farmers.push_back(Farmer("Vikas", 6, 200, 106));
+    farmers.push_back(Farmer("Sunita", 7, 180, 107));
+    farmers.push_back(Farmer("Deepak", 8, 170, 108));
+    farmers.push_back(Farmer("Pooja", 9, 150, 109));
+    farmers.push_back(Farmer("Arun", 10, 200, 110));
+    farmers.push_back(Farmer("Kiran", 11, 160, 111));
+    farmers.push_back(Farmer("Jai", 12, 220, 112));
+    farmers.push_back(Farmer("Nisha", 13, 140, 113));
+    farmers.push_back(Farmer("Ravi", 14, 160, 114));
+    farmers.push_back(Farmer("Preeti", 15, 190, 115));
+    farmers.push_back(Farmer("Sandeep", 16, 200, 116));
+    farmers.push_back(Farmer("Tanu", 17, 180, 117));
+    farmers.push_back(Farmer("Ritu", 18, 150, 118));
+    farmers.push_back(Farmer("Yash", 19, 210, 119));
+    farmers.push_back(Farmer("Sonal", 20, 200, 120));
+
+    cout << "Farmers' data has been added!" << endl;
+}*/
+
+
+bool isMatch(const string &a, const string &b)
+{
+    if (a.size() != b.size())
+    {
+        return false;
+    }
+    for (size_t i = 0; i < a.size(); ++i)
+    {
+        if (a[i] != b[i])
+            return false;
+    }
+    return true;
+}
+
+bool containsSubstring(const string &text, const string &pattern)
+{
+    size_t n = text.size();
+    size_t m = pattern.size();
+
+    for (size_t i = 0; i <= n - m; ++i)
+        {
+        bool match = true;
+        for (size_t j = 0; j < m; ++j)
+        {
+            if (text[i + j] != pattern[j])
+            {
+                match = false;
+                break;
+            }
+        }
+        if (match)
+            return true;
+    }
+    return false;
+}
+
+
+int findvillage()
+{
+    village vill[100];
+    ifstream infile("VILLAGES.txt");
+    string villages[100];
+    int villageCount = 0;
+
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+
+    while (villageCount < 100 && infile.peek() != EOF)
+    {
+        vill[villageCount].read_from_filev(infile);
+        if (vill[villageCount].villname.empty())
+            break;
+        villages[villageCount] = vill[villageCount].villname;
+        villageCount++;
+    }
+    infile.close();
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    while (true)
+    {
+        string input;
+        cout << "ENTER THE FULL NAME OF VILLAGE : ";
+        getline(cin, input);
+
+        if (input.empty())
+        {
+            cout << "Input cannot be empty. Please try again.\n";
+            continue;
+        }
+
+        bool found = false;
+        for (int i = 0; i < villageCount; ++i)
+        {
+            if (isMatch(villages[i], input))
+            {
+                cout << "VILLAGE FOUND : " << villages[i] << endl;
+                found = true;
+                return i+1;
+                break;
+            }
+        }
+
+        if (found)
+            break;
+
+        cout << "VILLAGE NOT FOUND! \n\nSUGGESTIONS:\n\n";
+        bool suggestionFound = false;
+
+        for (int i = 0; i < villageCount; ++i)
+        {
+            if (containsSubstring(villages[i], input))
+            {
+                cout << "did you mean:- " << villages[i] << endl<<endl;
+                suggestionFound = true;
+            }
+        }
+
+        if (!suggestionFound)
+        {
+            cout << "NO SIMILAR VILLAGE FOUND.\n";
+        }
+
+        cout << "PLESE TRY AGAIN.\n\n";
+    }
+}
+struct Complaint {
+    int complaintID;
+    string farmerName;
+    string description;
+    string status;
+    string date; // Complaint submission date
+
+    // Constructor
+    Complaint(int id, string name, string desc, string stat, string dt)
+        : complaintID(id), farmerName(name), description(desc), status(stat), date(dt) {}
+
+    // Display complaint details
+    void displayComplaint() const {
+        cout << "Complaint ID: " << complaintID << endl;
+        cout << "Farmer Name: " << farmerName << endl;
+        cout << "Description: " << description << endl;
+        cout << "Status: " << status << endl;
+        cout << "Date: " << date << endl;
+        cout << "----------------------" << endl;
+    }
+};
+
+// Complaint System Class
+class ComplaintSystem {
+private:
+    vector<Complaint> complaints;
+    int nextComplaintID = 1; // Auto-incrementing complaint ID
+
+public:
+    // Add a new complaint
+    void addComplaint(const string& name, const string& desc, const string& stat, const string& date) {
+        complaints.emplace_back(nextComplaintID++, name, desc, stat, date);
+    }
+
+    // Display all complaints
+    void displayAllComplaints() const {
+        if (complaints.empty()) {
+            cout << "No complaints to display." << endl;
+            return;
+        }
+        for (const auto& complaint : complaints) {
+            complaint.displayComplaint();
+        }
+    }
+
+    // Update the status of a complaint by ID
+    bool updateComplaintStatus(int id, const string& newStatus) {
+        for (auto& complaint : complaints) {
+            if (complaint.complaintID == id) {
+                complaint.status = newStatus;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Delete a complaint by ID
+    bool deleteComplaint(int id) {
+        auto it = remove_if(complaints.begin(), complaints.end(),
+            [id](const Complaint& c) { return c.complaintID == id; });
+        if (it != complaints.end()) {
+            complaints.erase(it, complaints.end());
+            return true;
+        }
+        return false;
+    }
+
+    // Filter complaints by status
+    vector<Complaint> filterComplaintsByStatus(const string& status) const {
+        vector<Complaint> filtered;
+        for (const auto& complaint : complaints) {
+            if (complaint.status == status) {
+                filtered.push_back(complaint);
+            }
+        }
+        return filtered;
+    }
+
+    // Sort complaints by date
+    void sortComplaintsByDate() {
+        sort(complaints.begin(), complaints.end(), [](const Complaint& a, const Complaint& b) {
+            return a.date < b.date;
+        });
+    }
+
+    // Display complaints by farmer name
+    void displayComplaintsByFarmer(const string& farmerName) const {
+        bool found = false;
+        for (const auto& complaint : complaints) {
+            if (complaint.farmerName == farmerName) {
+                complaint.displayComplaint();
+                found = true;
+            }
+        }
+        if (!found) {
+            cout << "No complaints found for farmer: " << farmerName << endl;
+        }
+    }
+};
+
+
+
+// Feedback structure
+
+class Feedback {
+public:
+    string category;  // Factory, Farmer, or Truck
+    string name;      // Farmer name, Truck ID, or Factory name
+    string message;   // Feedback message
+    string sentiment; // Positive/Negative/Neutral
+    string date;      // Date of feedback
+    int rating;       // For factory feedback (1-5), default -1 for others
+
+    Feedback(const string& cat, const string& nm, const string& msg, const string& sent, const string& dt, int rate = -1)
+        : category(cat), name(nm), message(msg), sentiment(sent), date(dt), rating(rate) {}
+
+    void displayFeedback() const {
+        cout << "Category: " << category << endl;
+        cout << "Name: " << name << endl;
+        if (rating != -1)
+            cout << "Rating: " << rating << "/5" << endl;
+        cout << "Message: " << message << endl;
+        cout << "Sentiment: " << sentiment << endl;
+        cout << "Date: " << date << endl;
+        cout << "---------------------------" << endl;
+    }
+};
+
+class FeedbackSystem {
+private:
+    vector<Feedback> feedbacks;
+
+public:
+    // Receive Factory Feedback
+    void receiveFactoryFeedback() {
+        string farmerName, message, sentiment, date;
+        int rating;
+
+        cout << "Enter Farmer Name: ";
+        getline(cin, farmerName);
+        cout << "Enter Factory Rating (1-5): ";
+        cin >> rating;
+        cin.ignore(); // To consume leftover newline character
+        cout << "Enter Feedback Message: ";
+        getline(cin, message);
+        cout << "Enter Sentiment (positive/negative/neutral): ";
+        getline(cin, sentiment);
+        cout << "Enter Date (YYYY-MM-DD): ";
+        getline(cin, date);
+
+        feedbacks.emplace_back("Factory", farmerName, message, sentiment, date, rating);
+        cout << "Factory feedback added successfully.\n";
+    }
+
+    // Receive Farmer Feedback
+    void receiveFarmerFeedback() {
+        string farmerName, message, sentiment, date;
+
+        cout << "Enter Farmer Name: ";
+        getline(cin, farmerName);
+        cout << "Enter Feedback Message: ";
+        getline(cin, message);
+        cout << "Enter Sentiment (positive/negative/neutral): ";
+        getline(cin, sentiment);
+        cout << "Enter Date (YYYY-MM-DD): ";
+        getline(cin, date);
+
+        feedbacks.emplace_back("Farmer", farmerName, message, sentiment, date);
+        cout << "Farmer feedback added successfully.\n";
+    }
+
+    // Receive Truck Feedback
+    void receiveTruckFeedback() {
+        string truckID, message, sentiment, date;
+
+        cout << "Enter Truck ID: ";
+        getline(cin, truckID);
+        cout << "Enter Feedback Message: ";
+        getline(cin, message);
+        cout << "Enter Sentiment (positive/negative/neutral): ";
+        getline(cin, sentiment);
+        cout << "Enter Date (YYYY-MM-DD): ";
+        getline(cin, date);
+
+        feedbacks.emplace_back("Truck", truckID, message, sentiment, date);
+        cout << "Truck feedback added successfully.\n";
+    }
+
+    // Display All Feedbacks
+    void displayAllFeedbacks() const {
+        if (feedbacks.empty()) {
+            cout << "No feedbacks to display.\n";
+            return;
+        }
+
+        for (const auto& feedback : feedbacks) {
+            feedback.displayFeedback();
+        }
+    }
+};
+
+
+// Factory class definition
+
+class Factory
+
+{
+
+public:
+
+    double getAmountPerTon(int factoryID)
+
+    {
+        switch (factoryID)
+
+        {
+        case 101:
+            return 2300.20;
+
+        case 102:
+            return 2350.60;
+
+        case 103:
+            return 2400.75;
+
+        case 104:
+            return 2450.15;
+
+        case 105:
+            return 2500.50;
+
+        case 106:
+            return 2550.30;
+
+        case 107:
+            return 2600.90;
+
+        case 108:
+            return 2650.95;
+
+        case 109:
+            return 2700.00;
+
+        case 110:
+            return 2750.20;
+
+        case 111:
+            return 2800.50;
+
+        case 112:
+            return 2850.75;
+
+        case 113:
+            return 2900.80;
+
+        case 114:
+            return 2950.90;
+
+        case 115:
+            return 3000.00;
+
+        case 116:
+            return 3050.25;
+
+        case 117:
+            return 3100.60;
+
+        case 118:
+            return 3150.75;
+
+        case 119:
+            return 3200.90;
+
+        case 120:
+            return 3250.00;
+
+        case 121:
+            return 3300.50;
+
+        case 122:
+            return 3350.75;
+
+        case 123:
+            return 3400.80;
+
+        case 124:
+            return 3450.90;
+
+        case 125:
+            return 3500.00;
+
+        case 126:
+            return 3550.25;
+
+        default:
+            cout << "That factory ID is not present.\n";
+            exit(1);
+
+        }
+
+    }
+
+
+    void displayFarmersByFactoryID(vector<Farmer> &farmers, int factoryID)
+
+    {
+        factoryrequest request[101];
+        ifstream infile;
+        string filename = "REQUEST.txt";
+        infile.open(filename);
+        if (!infile.is_open())
+        {
+            cout << "Error opening file for writing!" << endl;
+            return ;
+        }
+        for(int i=0;i<101;i++)
+        {
+            request[i].read_from_filer(infile);
+            if(request[i].fid==factoryID)
+            {
+                cout<<"farmer name:"<<request[i].farmername<<endl;
+                cout<<"weight:"<<request[i].weight<<endl<<endl;
+            }
+        }
+        infile.close();
+
+    }
+
+
+    void displayFactorySummary(vector<Farmer> &farmers)
+
+    {
+        for (int factoryID = 101; factoryID <= 126; ++factoryID)
+
+        {
+            displayFarmersByFactoryID(farmers, factoryID);
+
+        }
+
+    }
+
+};
+
+
+// FactoryDetails class to display all factories and their rates
+
+class FactoryDetails
+
+{
+public:
+
+    void displayFactories()
+
+    {
+        cout << "\n\nFactory Details (ID and Amount Per Ton):\n";
+        cout<<"\n";
+        cout << "----------------------------------------\n";
+
+        for (int id = 101; id <= 126; ++id)
+
+        {
+            double amount = Factory().getAmountPerTon(id);
+            cout << "Factory ID: " << id << " | Amount Per Ton: " << amount << "\n";
+
+        }
+
+    }
+
+    void displayDetailedReport(vector<Farmer> &farmers, Factory &factory)
+
+    {
+        cout << "\nFactory Detailed Report:\n";
+        cout << "-------------------------\n";
+         cout<<"\n";
+        factory.displayFactorySummary(farmers);
+
+    }
+};
+
+// search function//
+void displayFarmersByRegion(vector<Farmer>& farmers, string region, Factory& factory)
+
+{
+    vector<string> validRegions =
+
+    {"North", "East", "West", "South"};
+
+    if (find(validRegions.begin(), validRegions.end(), region) == validRegions.end())
+
+        {
+
+        cout << "Invalid region entered. Please enter a valid region (North, East, West, South).\n";
+        return;
+
+    }
+
+    cout << "\nFarmers from the " << region << " region:\n";
+    cout << "---------------------------------------\n";
+    cout << "Name\t\tID\t\tLoad\t\tFactory ID\tTotal Amount\n";
+
+    bool found = false;
+    double totalAmountForRegion = 0.0;
+
+    for (const auto& farmer : farmers)
+        {
+
+        if (farmer.region == region)
+         {
+            found = true;
+            double totalAmount = farmer.load * factory.getAmountPerTon(farmer.factoryID);
+            totalAmountForRegion += totalAmount;
+            cout << farmer.name << "\t\t" << farmer.id << "\t\t"
+                 << farmer.load << "\t\t" << farmer.factoryID << "\t\t"
+                 << totalAmount << "\n";
+
+        }
+
+    }
+
+    if (!found)
+        {
+
+        cout << "No farmers found from the " << region << " region.\n";
+    }
+    else
+        {
+        cout << "\nTotal amount for region " << region << ": " << totalAmountForRegion << "\n";
+
+    }
+
+}
+
+
+// TotalAmountCalculator class to calculate total payments
+
+class TotalAmountCalculator
+{
+public:
+
+    void calculateTotalAmount(vector<Farmer> &farmers, Factory &factory)
+{
+    int factoryID;
+    cout << "\nEnter the Factory ID to calculate total amounts for farmers: ";
+    cin >> factoryID;
+
+    double amountPerTon = factory.getAmountPerTon(factoryID);
+
+    cout << "\n\nTotal Amount Calculation for Farmers of Factory ID: " << factoryID << "\n";
+    cout << "-----------------------------------------------------\n";
+    cout << "Name\t\tTotal Load\tTotal Amount\n";
+
+    map<string, pair<double, double>> farmerTotals; // Map to store farmer name and pair of (total load, total amount)
+
+    factoryrequest request[101];
+    ifstream infile("REQUEST.txt");
+
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return;
+    }
+
+    for (int i = 0; i < 101; i++)
+    {
+        request[i].read_from_filer(infile);
+
+        if (infile.eof()) // Stop reading if EOF is reached
+            break;
+
+        if (request[i].fid == factoryID)
+        {
+            double totalAmount = request[i].weight * amountPerTon;
+
+            // Update farmer's total load and total amount
+            farmerTotals[request[i].farmername].first += request[i].weight;
+            farmerTotals[request[i].farmername].second += totalAmount;
+        }
+    }
+
+    infile.close();
+
+    if (farmerTotals.empty())
+    {
+        cout << "No farmers are associated with Factory ID: " << factoryID << "\n";
+        return;
+    }
+
+    // Display farmers and their totals
+    for (const auto &entry : farmerTotals)
+    {
+        cout << entry.first << "\t\t" << entry.second.first << "\t\t" << entry.second.second << "\n";
+    }
+}
+
+
+    double calculateTotalForFactory(vector<Farmer> &farmers, int factoryID, Factory &factory)
+    {
+        double total = 0;
+        for (const auto &farmer : farmers)
+        {
+            if (farmer.factoryID == factoryID)
+            {
+                total += farmer.load * factory.getAmountPerTon(factoryID);
+            }
+        }
+        return total;
+    }
+
+    double calculateTotalForRegion(vector<Farmer> &farmers, string region, Factory &factory)
+    {
+        double total = 0;
+        for (const auto &farmer : farmers)
+        {
+            if (farmer.region == region)
+            {
+                total += farmer.load * factory.getAmountPerTon(farmer.factoryID);
+            }
+        }
+        return total;
+    }
+
+    void generatePaymentReport(vector<Farmer> &farmers, Factory &factory)
+    {
+        for (int factoryID = 101; factoryID <= 126; ++factoryID)
+        {
+            cout << "\nFactory ID: " << factoryID << "\n";
+            double total = calculateTotalForFactory(farmers, factoryID, factory);
+            cout << "Total Payments: " << total << "\n";
+        }
+    }
+
+
+    void sortFarmersByTotalAmount(vector<Farmer> &farmers, Factory &factory)
+{
+    map<string, double> farmerTotals;
+
+    factoryrequest request[101];
+    ifstream infile;
+    string filename = "REQUEST.txt";
+    infile.open(filename);
+
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        request[i].read_from_filer(infile);
+
+        // Calculate total amount for the current request
+        double totalAmount = request[i].weight * factory.getAmountPerTon(request[i].fid);
+
+        // Update the total amount for the farmer in the map
+        farmerTotals[request[i].farmername] += totalAmount;
+    }
+
+    infile.close();
+
+    // Convert map to a vector of pairs for sorting
+    vector<pair<string, double>> sortedFarmers(farmerTotals.begin(), farmerTotals.end());
+
+    // Sort the farmers by their total amounts in descending order
+    sort(sortedFarmers.begin(), sortedFarmers.end(), [](const pair<string, double> &a, const pair<string, double> &b) {
+        return a.second > b.second;
+    });
+
+    // Display sorted farmers
+    cout << "\nFarmers Sorted by Total Amount:\n";
+    cout << "Name\t\tTotal Amount\n";
+    cout << "---------------------------------\n";
+    for (const auto &entry : sortedFarmers)
+    {
+        cout << entry.first << "\t\t" << entry.second << "\n";
+    }
+}
+    };
+
+
+// Main program
+
+void displayWelcomeMessage()
+{
+
+    cout << "\t***************************************************************************\n";
+    cout << "\t*                                                                         *\n";
+    cout << "\t*                   Welcome to the Sugarcane Factory Management System!   *\n";
+    cout << "\t*                                                                         *\n";
+    cout << "\t***************************************************************************\n\n";
+
+    cout << "\t-> Explore factory rates: Check the price per ton for each factory.\n";
+    cout << "\t-> View farmer details: Access the list of farmers associated with each factory.\n";
+    cout << "\t-> Calculate earnings: Compute the total amount due to each farmer.\n";
+    cout << "\t-> Provide feedback: Share and collect valuable insights from farmers.\n";
+    cout << "\t-> Handle complaints: Manage and resolve issues effectively.\n";
+    cout << "\t-> Generate reports: View detailed summaries and performance metrics.\n";
+    cout << "\n\t***********************************************************************\n";
+
+}
+
+bool isMatch1(const string &a, const string &b)
+{
+    return a == b;
+}
+
+void newuser()
+{
+    farm farmers;
+    ofstream outfile("FARMERS.txt", ios::app);
+
+    if (!outfile.is_open())
+    {
+        cout << "Error opening file for writing!" << endl;
+        return;
+    }
+
+    cout << "ENTER YOUR NAME : ";
+    cin >> farmers.fname;
+    cout << "ENTER NEW PASSWORD : ";
+    cin >> farmers.fpass;
+
+    farmers.write_to_filex(outfile);
+    outfile.close();
+
+    cout << "NEW USER ADDED SUCCESSFULLY!\n";
+}
+
+string maskPasswordInput()
+{
+    string password;
+    char ch;
+
+    while ((ch = _getch()) != '\r') // '\r' is Enter key
+    {
+        if (ch == '\b') // Backspace key
+        {
+            if (!password.empty())
+            {
+                password.pop_back();
+                cout << "\b \b"; // Erase the last asterisk
+            }
+        }
+        else
+        {
+            password.push_back(ch);
+            cout << '*'; // Print asterisk for each character
+        }
+    }
+    cout << endl;
+    return password;
+}
+void mersorting(int arr[],int low,int mid,int high)
+{
+    int i=low,j=mid+1;
+    vector<int>temp;
+    while(i<=mid&&j<=high)
+    {
+        if(arr[i]<=arr[j])
+        {
+            temp.push_back(arr[i]);
+            i++;
+        }
+        else
+        {
+            temp.push_back(arr[j]);
+            j++;
+        }
+    }
+    while(i<=mid)
+    {
+        temp.push_back(arr[i]);
+        i++;
+    }
+    while(j<=high)
+    {
+        temp.push_back(arr[j]);
+        j++;
+    }
+    int x=0;
+    for(int k=low;k<=high;k++)
+    {
+        arr[k]=temp[x];
+        x++;
+    }
+}
+void mergesort(int arr[],int low,int high)
+{
+    if(low>=high)
+    {
+        return;
+    }
+    int mid=(low+high)/2;
+    mergesort(arr,low,mid);
+    mergesort(arr,mid+1,high);
+    mersorting(arr,low,mid,high);
+}
+void forgot_password(const string &username)
+{
+    string newPassword;
+    farm farmers[100];
+    ifstream infile("FARMERS.txt");
+    ofstream tempfile("TEMP.txt");
+
+    if (!infile.is_open() || !tempfile.is_open())
+    {
+        cout << "Error opening files!" << endl;
+        return;
+    }
+
+    bool userFound = false;
+    int farmerCount = 0;
+
+    while (farmerCount < 100 && infile.peek() != EOF)
+    {
+        farmers[farmerCount].read_from_filex(infile);
+
+        if (farmers[farmerCount].fname == username)
+        {
+            userFound = true;
+            cout << "ENTER NEW PASSWORD: ";
+            newPassword = maskPasswordInput();
+            farmers[farmerCount].fpass = newPassword;
+        }
+
+        farmers[farmerCount].write_to_filex(tempfile);
+        farmerCount++;
+    }
+
+    infile.close();
+    tempfile.close();
+
+    if (userFound)
+    {
+        remove("FARMERS.txt");
+        rename("TEMP.txt", "FARMERS.txt");
+        cout << "PASSWORD CHANGED SUCCESSFULLY!\n";
+    }
+    else
+    {
+        remove("TEMP.txt");
+        cout << "User not found!" << endl;
+    }
+}
+
+string login()
+{
+    string pass, farname;
+    farm farmers[100];
+    ifstream infile("FARMERS.txt");
+
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return "x";
+    }
+
+    cout << "ENTER YOUR NAME : ";
+    cin >> farname;
+
+    int farmerCount = 0;
+    bool userFound = false;
+
+    while (farmerCount < 100 && infile.peek() != EOF)
+    {
+        farmers[farmerCount].read_from_filex(infile);
+        if (farmers[farmerCount].fname.empty())
+            break;
+
+        if (isMatch1(farmers[farmerCount].fname, farname))
+        {
+            userFound = true;
+            int attempts = 0;
+
+            while (attempts < 3)
+            {
+                cout << "ENTER PASSWORD : ";
+                pass = maskPasswordInput();
+
+                if (isMatch1(pass, farmers[farmerCount].fpass))
+                {
+                    welcome(farmers[farmerCount].fname);
+                    return farmers[farmerCount].fname;
+                }
+                else
+                {
+                    attempts++;
+                    if (attempts < 3)
+                    {
+                        cout << "WRONG PASSWORD! ATTEMPTS LEFT: " << (3 - attempts) << endl;
+                        cout << "1. TRY AGAIN\n2. FORGOT PASSWORD\nCHOOSE AN OPTION: ";
+                        int choice;
+                        cin >> choice;
+
+                        if (choice == 2)
+                        {
+                            forgot_password(farname);
+                            return "x";
+                        }
+                    }
+                }
+            }
+
+            cout << "TOO MANY ATTEMPTS! ACCESS DENIED.\n";
+            return "x";
+        }
+        farmerCount++;
+    }
+
+    infile.close();
+
+    if (!userFound)
+    {
+        cout << "User not found! \nPlease create a new account.\n";
+        newuser();
+        return "x";
+    }
+
+    return "x";
+}
+
+int findtruck(int factid,string farmername,int villid)
+{
+    trucks tru[100];
+    ifstream infile;
+    string filename = "TRUCKS.txt";
+
+    infile.open(filename);
+    if (!infile)
+    {
+
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+
+    cout << "\nTRUCKS AVALABLE ARE :\n\n";
+    for (int i = 0; i < 56; i++)
+    {
+        tru[i].read_from_filet(infile);
+            if(tru[i].factiid==factid)
+            {
+                cout << "TRUCK ID : " << tru[i].truckid<< endl;
+                cout << "DRIVER NAME : " << tru[i].driver<< endl;
+                cout << "TRUCK NUMBER : KA 22 " << tru[i].truckno<< endl;
+                cout << "LOAD CAPACITY :" << tru[i].load<< endl;
+                cout << "CONTACT NUMBER :" << tru[i].tcontact<< endl;
+                cout << "STATUS :" << tru[i].status<< endl;
+                cout << "FACTORY ID :" << tru[i].factiid<< endl<<endl;
+            }
+    }
+    infile.close();
+
+    int id;
+    cout<<"CHOICE ONE TRUCK!\nENTER TRUCK ID:";
+    cin>>id;
+
+    string src;
+
+    village vill;
+    ifstream infile2("VILLAGES.txt");
+    string villages[100];
+    int villageCount = 0;
+
+    if (!infile2.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+    for(int i=0;i<villid;i++)
+    {
+        vill.read_from_filev(infile2);
+        src=vill.villname;
+    }
+    infile2.close();
+
+    factory fact[50];
+    ifstream infile5;
+    string filename5 = "FACTORIES.txt";
+
+    string dest;
+    infile5.open(filename5);
+    if (!infile5)
+    {
+
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+
+    for (int i = 0; i < factid-100; i++)
+    {
+        fact[i].read_from_filef(infile5);
+            dest=fact[i].taluka;
+
+    }
+    infile5.close();
+
+    dist matrix[50];
+    ofstream outfile10;
+    ifstream infile10;
+    string filename10 = "ddd.txt";
+    infile10.open(filename10);
+    if (!infile10)
+    {
+
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+
+    for (int i = 0; i < villid; i++)
+    {
+        matrix[i].read_from_filed(infile10);
+    }
+
+    infile10.close();
+
+    int distan=matrix[villid+1].dis[factid-101];
+
+
+    truckreq trureq;
+    ifstream infile3;
+    ofstream outfile3;
+    string filename3 = "TRUCKREQUEST.txt";
+    outfile3.open(filename3,ios::app);
+    if (!outfile3.is_open())
+    {
+        cout << "Error opening file for writing!" << endl;
+        return 0;
+    }
+    trureq.tid=id;
+    trureq.farmername=farmername;
+    trureq.src=src;
+    trureq.dest=dest;
+    trureq.distance=distan;
+
+    trureq.write_to_filetru(outfile3);
+    outfile3.close();
+
+
+    return 0;
+}
+int allfactories()
+{
+    factory fact[50];
+    ifstream infile;
+    string filename = "FACTORIES.txt";
+
+
+    infile.open(filename);
+    if (!infile)
+    {
+
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+
+    for (int i = 0; i < 26; i++)
+    {
+        fact[i].read_from_filef(infile);
+
+            cout << "FACTORY ID :" << fact[i].factid << endl;
+            cout << "FACTORY NAME : " << fact[i].factname << endl;
+            cout << "TALUKA :" << fact[i].taluka << endl;
+            cout << "ADDRESS : " << fact[i].address << endl;
+            cout << "CONTACT : " << fact[i].contact << endl<<endl;
+
+
+    }
+    infile.close();
+}
+
+int findfactory(int x,string farmername)
+{
+    dist matrix[50];
+    ofstream outfile;
+    ifstream infile;
+    string filename = "ddd.txt";
+    infile.open(filename);
+    if (!infile)
+    {
+
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+
+    for (int i = 1; i <= x; i++)
+    {
+        matrix[i].read_from_filed(infile);
+    }
+
+    infile.close();
+    vector<int>temp;
+
+
+    for(int i=1;i<=26;i++)
+    {
+        temp.push_back(matrix[x].dis[i]);
+    }
+
+
+    int n = temp.size();
+    int smallest=1,second;
+    for(int i=2;i<=n;i++)
+    {
+
+        if(temp[i]<temp[smallest])
+        {
+            second=smallest;
+            smallest=i;
+        }
+
+        if(temp[i]>temp[smallest]&&temp[i]<temp[second])
+        {
+            second=i;
+        }
+
+    }
+
+    factory fact[50];
+    ifstream infile1;
+    string filename1 = "FACTORIES.txt";
+    int C = 0;
+
+
+    infile1.open(filename1);
+    if (!infile1) {
+        cout << "Error opening file for reading!" << endl;
+        return -1;
+    }
+
+    cout << "\nCLOSEST FACTORIES FROM YOUR VILLAGE ARE :\n\n";
+    for (int i = 0; i < 50; i++)
+        {
+
+            if (C >= 2)
+            {
+
+                break;
+
+            }
+
+        fact[i].read_from_filef(infile1);
+        if (fact[i].factid == (smallest + 100))
+        {
+
+            cout << "FACTORY ID :" << fact[i].factid << endl;
+            cout << "FACTORY NAME : " << fact[i].factname << endl;
+            cout << "TALUKA :" << fact[i].taluka << endl;
+            cout << "ADDRESS : " << fact[i].address << endl;
+            cout << "CONTACT : " << fact[i].contact << endl;
+            cout << "DISTANCE FROM YOU :"<< temp[smallest] <<"KM ONLY"<<endl<<endl;
+            C++;
+
+        }
+
+        else if(fact[i].factid == (second + 100))
+        {
+
+            cout << "FACTORY ID :" << fact[i].factid << endl;
+            cout << "FACTORY NAME : " << fact[i].factname << endl;
+            cout << "TALUKA :" << fact[i].taluka << endl;
+            cout << "ADDRESS : " << fact[i].address << endl;
+            cout << "CONTACT : " << fact[i].contact << endl;
+            cout << "DISTANCE FROM YOU :"<< temp[second] <<"KM ONLY"<<endl<<endl;
+            C++;
+
+        }
+
+    }
+    infile1.close();
+    int id;
+    cout<<"CHOICE ONE FACTORY!\nENTER FACTORY ID :";
+    cin>>id;
+
+    int weight;
+    cout<<"ENTER APPROX WEIGHT :";
+    cin>>weight;
+
+
+    factoryrequest request;
+    ofstream outfile3;
+    string filename3 = "REQUEST.txt";
+    outfile3.open(filename3,ios::app);
+    if (!outfile3.is_open())
+    {
+        cout << "Error opening file for writing!" << endl;
+        return 0;
+    }
+    request.fid=id;
+    request.farmername=farmername;
+    request.weight=weight;
+
+
+    request.write_to_filer(outfile3);
+    outfile3.close();
+
+
+    return id;
+
+
+}
+
+
+void farmer()
+{
+    int choice;
+    cout << "\n1.NEW USER \n2.EXISTING ACCOUNT \n\nENTER CHOICE : ";
+    cin >> choice;
+
+    switch (choice)
+    {
+        case 1: newuser();
+        break;
+        case 2:
+            break;
+        default:
+            cout << "Invalid choice.\n";
+            return;
+    }
+    logintheme();
+    string farmername=login();
+    cout<<"1.TO FIND CLOSEST SUGAR FACTORY\n2.ALL SUGAR FACTORIES\n3.EXTT\n\nENTER CHOICE:";
+    int choice1;
+    cin>>choice1;
+    switch(choice1)
+    {
+        case 1:
+
+            {
+            int x=findvillage();
+
+            int y=findfactory(x,farmername);
+
+            findtruck(y,farmername,x);
+            }
+        break;
+        case 2:allfactories();
+        break;
+        case 3:return;
+        break;
+        default:
+            cout << "Invalid choice.\n";
+            return;
+    }
+}
+void resetPassword(const string &driverName)
+{
+    fstream file("DRIVERPASSWORD.txt", ios::in | ios::out);
+
+    if (!file.is_open())
+    {
+        cout << "Error opening file for password reset!" << endl;
+        return;
+    }
+
+    string line;
+    string tempFile = "TEMP.txt";
+    ofstream temp(tempFile);
+
+    if (!temp.is_open())
+    {
+        cout << "Error creating temporary file!" << endl;
+        file.close();
+        return;
+    }
+
+    bool userFound = false;
+    while (getline(file, line))
+    {
+        if (line.find(driverName) != string::npos) // Match driver name
+        {
+            userFound = true;
+            string newPassword;
+            cout << "Enter new password: ";
+            char ch;
+            newPassword = "";
+
+            while ((ch = getch()) != '\n' && ch != '\r')
+            {
+                if (ch == '\b') // Handle backspace
+                {
+                    if (!newPassword.empty())
+                    {
+                        newPassword.pop_back();
+                        cout << "\b \b";
+                    }
+                }
+                else
+                {
+                    newPassword += ch;
+                    cout << "*";
+                }
+            }
+            cout << endl;
+
+            temp << driverName << " " << newPassword << endl; // Update password
+        }
+        else
+        {
+            temp << line << endl; // Copy other lines as is
+        }
+    }
+
+    file.close();
+    temp.close();
+
+    if (userFound)
+    {
+        remove("DRIVERPASSWORD.txt");
+        rename(tempFile.c_str(), "DRIVERPASSWORD.txt");
+        cout << "Password reset successfully!" << endl;
+    }
+    else
+    {
+        remove(tempFile.c_str());
+        cout << "User not found. Password reset failed." << endl;
+    }
+}
+void displayJourneys(const string &driverName,int ttid)
+{
+    truckreq requests[100];
+    ifstream infile;
+    string filename="TRUCKREQUEST.txt";
+
+    infile.open(filename);
+
+
+    cout << "\nAll Journeys for Driver: " << driverName << "\n";
+    cout << "-------------------------------------------\n";
+    cout << "Truck ID\tFarmer\t\tSource\t\tDestination\tDistance\n";
+
+    bool journeysFound = false;
+    int count = 0;
+
+    while (count < 100 && infile.peek() != EOF)
+    {
+        requests[count].read_from_filetru(infile);
+
+        if (requests[count].tid == ttid)
+        {
+            journeysFound = true;
+            cout << requests[count].tid << "\t\t"<<requests[count].farmername<< "\t\t" << requests[count].src << "\t\t"
+                 << requests[count].dest << "\t\t" << requests[count].distance << " km\n";
+        }
+        count++;
+    }
+
+    infile.close();
+
+    if (!journeysFound)
+    {
+        cout << "No journeys found for the driver.\n";
+    }
+}
+
+string loginD()
+{
+    string pass, driver;
+    driverpass dpass[100];
+    ifstream infile("DRIVERPASSWORD.txt");
+
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return "0";
+    }
+
+    cout << "ENTER YOUR NAME : ";
+    cin >> driver;
+
+    int dCount = 0;
+    bool userFound = false;
+
+    while (dCount < 100 && infile.peek() != EOF)
+    {
+        dpass[dCount].read_from_filedpass(infile);
+        if (dpass[dCount].dname.empty())
+            break;
+
+        if (isMatch(dpass[dCount].dname, driver))
+        {
+            userFound = true;
+            int attempts = 0;
+
+            while (attempts < 3)
+            {
+                cout << "ENTER PASSWORD : ";
+                pass = "";
+
+                char ch;
+                while ((ch = getch()) != '\n' && ch != '\r')
+                {
+                    if (ch == '\b') // Handle backspace
+                    {
+                        if (!pass.empty())
+                        {
+                            pass.pop_back();
+                            cout << "\b \b";
+                        }
+                    }
+                    else
+                    {
+                        pass += ch;
+                        cout << "*";
+                    }
+                }
+                cout << endl;
+
+                if (isMatch(pass, dpass[dCount].dpass))
+                {
+                    welcome(dpass[dCount].dname);
+                    return dpass[dCount].dname;
+                }
+                else
+                {
+                    attempts++;
+                    if (attempts < 3)
+                    {
+                        cout << "WRONG PASSWORD!\n";
+                        cout << "1. Try Again\n2. Forgot Password\nEnter your choice: ";
+                        int choice;
+                        cin >> choice;
+
+                        if (choice == 2)
+                        {
+                            cout << "Redirecting to password reset...\n";
+                            resetPassword(driver); // Assuming resetPassword is implemented
+                            return "x";
+                        }
+                    }
+                }
+            }
+
+            cout << "Maximum attempts reached. Access denied.\n";
+            return "x";
+        }
+        dCount++;
+    }
+
+    infile.close();
+
+    if (!userFound)
+    {
+        cout << "User not found!\nPlease create a new account.\n";
+        return "x";
+    }
+
+    return "x";
+}
+void displayEarnings(const string &driverName, int ttid, double ratePerKm)
+{
+    truckreq requests[100];
+    ifstream infile;
+    string filename = "TRUCKREQUEST.txt";
+
+    infile.open(filename);
+
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return;
+    }
+
+    cout << "\nEarnings for Driver: " << driverName << "\n";
+    cout << "-------------------------------------------\n";
+    cout << "Truck ID\tFarmer\t\tSource\t\tDestination\tDistance\tEarnings\n";
+
+    bool journeysFound = false;
+    int count = 0;
+
+    while (count < 100 && infile.peek() != EOF)
+    {
+        requests[count].read_from_filetru(infile);
+
+        if (requests[count].tid == ttid)
+        {
+            journeysFound = true;
+            double earnings = requests[count].distance * ratePerKm;
+            cout << requests[count].tid << "\t\t" << requests[count].farmername << "\t\t"
+                 << requests[count].src << "\t\t" << requests[count].dest << "\t\t"
+                 << requests[count].distance << " km\t\t$" << earnings << "\n";
+        }
+        count++;
+    }
+
+    infile.close();
+
+    if (!journeysFound)
+    {
+        cout << "No journeys found for the driver.\n";
+    }
+}
+void displayEarningsWithFarmer(const string &driverName, int ttid, const string &farmerName, double ratePerKm)
+{
+    truckreq requests[100];
+    ifstream infile;
+    string filename = "TRUCKREQUEST.txt";
+
+    infile.open(filename);
+
+    if (!infile.is_open())
+    {
+        cout << "Error opening file for reading!" << endl;
+        return;
+    }
+
+    cout << "\nEarnings for Driver: " << driverName << " with Farmer: " << farmerName << "\n";
+    cout << "--------------------------------------------------------------\n";
+    cout << "Truck ID\tFarmer\t\tSource\t\tDestination\tDistance\tEarnings\n";
+
+    bool journeysFound = false;
+    int count = 0;
+
+    while (count < 100 && infile.peek() != EOF)
+    {
+        requests[count].read_from_filetru(infile);
+
+        if (requests[count].tid == ttid && requests[count].farmername == farmerName)
+        {
+            journeysFound = true;
+            double earnings = requests[count].distance * ratePerKm;
+            cout << requests[count].tid << "\t\t" << requests[count].farmername << "\t\t"
+                 << requests[count].src << "\t\t" << requests[count].dest << "\t\t"
+                 << requests[count].distance << " km\t\t$" << earnings << "\n";
+        }
+        count++;
+    }
+
+    infile.close();
+
+    if (!journeysFound)
+    {
+        cout << "No journeys found for the driver with this farmer.\n";
+    }
+}
+
+void trucktor()
+{
+    string driverName = loginD();
+    if (driverName == "x")
+            {
+        cout<<"\nINVALID USER\n";
+    }
+    cout<<"YOUR DETAILS\n\n:";
+    trucks tru[100];
+    ifstream infile;
+    string filename = "TRUCKS.txt";
+
+    int ttid;
+    infile.open(filename);
+    if (!infile)
+    {
+
+        cout << "Error opening file for reading!" << endl;
+        return;
+    }
+    for (int i = 0; i < 56; i++)
+    {
+        tru[i].read_from_filet(infile);
+            if(tru[i].driver==driverName)
+            {
+                ttid=tru[i].truckid;
+                cout << "TRUCK ID : " << tru[i].truckid<< endl;
+                cout << "DRIVER NAME : " << tru[i].driver<< endl;
+                cout << "TRUCK NUMBER : KA 22 " << tru[i].truckno<< endl;
+                cout << "LOAD CAPACITY :" << tru[i].load<< endl;
+                cout << "CONTACT NUMBER :" << tru[i].tcontact<< endl;
+                cout << "STATUS :" << tru[i].status<< endl;
+                cout << "FACTORY ID :" << tru[i].factiid<< endl<<endl;
+            }
+    }
+    infile.close();
+    while(1)
+    {
+        cout<<"1.display all journeys\n2.money earned\n3.journeys with farmer\n4.exit\nenter choice:";
+        int ch;
+        cin>>ch;
+        switch(ch)
+        {
+            case 1:displayJourneys(driverName,ttid);
+            break;
+            case 2:displayEarnings(driverName,ttid,ratePerKm);
+                break;
+            case 3:{
+                string farmerName;
+                cout<<"enter farmer name:";
+                cin>>farmerName;
+                displayEarningsWithFarmer(driverName,ttid,farmerName,ratePerKm);}
+            break;
+            case 4:return ;
+
+            default :cout<<"INVALID CHOICE\n";
+        }
+    }
+}
+void cfactory() {
+    for(int i=0;i<40;i++)
+    {
+    cout<<"-";
+    }
+    for(int i=0;i<40;i++)
+    {
+    cout<<"*";
+    }
+    for(int i=0;i<40;i++)
+    {
+    cout<<"-";
+    }
+    cout<<endl;
+    cout<<"\n\n\n";
+    cout <<"\t\t\t\t\t\tWELCOME TO THE TEAM factory";
+    cout<<"\n\n\n";
+    for(int i=0;i<40;i++)
+    {
+    cout<<"-";
+    }
+    for(int i=0;i<40;i++)
+    {
+    cout<<"*";
+    }
+    for(int i=0;i<40;i++)
+    {
+    cout<<"-";
+    }
+    cout<<endl;
+     cout<<endl;
+
+
+    factory fact[26];
+    ifstream infile;
+    string filename = "FACTORIES.txt";
+
+
+    infile.open(filename);
+    if (!infile)
+    {
+
+        cout << "Error opening file for reading!" << endl;
+        return ;
+    }
+
+    for (int i = 0; i < 26; i++)
+    {
+        fact[i].read_from_filef(infile);
+    }
+    infile.close();
+
+
+    // Add sample suppliers
+
+    addSupplier("A1 Suppliers", "Agra", 5);
+    addSupplier("B2 Suppliers", "Gorakhpur", 4);
+
+    // Add sample customers
+
+    addCustomer("John Doe", "john.doe@example.com");
+    addCustomer("Jane Smith", "jane.smith@example.com");
+
+    // Add sample farmers
+
+
+
+    // Sample login and menu interaction
+
+    int fid;
+    cout << "Enter factory ID to login: ";
+    cin >> fid;
+
+    try {
+
+        // Get the factory by ID and display details
+
+        cout << "factory ID :" << fact[fid-101].factid << endl;
+        cout << "factory NAME : " << fact[fid-101].factname << endl;
+        cout << "TALUKA :" << fact[fid-101].taluka << endl;
+        cout << "ADDRESS : " << fact[fid-101].address << endl;
+        cout << "CONTACT : " << fact[fid-101].contact << endl<<endl;
+
+        // Menu
+
+        int choice;
+        do {
+            cout << "\nMenu:\n";
+            cout << "1. Receive Sugarcane\n";
+            cout << "2. Produce Sugar\n";
+            cout << "3. Sell to Market\n";
+            cout << "4. Display Inventory\n";
+            cout << "5. Display Sales\n";
+            cout << "6. Add Staff\n";
+            cout << "7. Remove Staff\n";
+            cout << "8. Display Staff\n";
+            cout << "9. Calculate Production Efficiency\n";
+            cout << "10. Display Farmers\n";
+            cout << "11. Display Revenue\n";
+            cout << "12. Exit\n";
+            cout << "Enter your choice: ";
+            cin >> choice;
+
+            switch (choice) {
+
+                case 1: {
+
+                    int quantity=0;
+                    float price;
+                    price=Factory().getAmountPerTon(fid);
+                    receiveSugarcane(quantity, price,fid);
+                    break;
+                }
+                case 2: {
+
+                    int quantity;
+                    cout << "Enter quantity of sugarcane to produce sugar: ";
+                    cin >> quantity;
+                    produceSugar(quantity);
+                    break;
+                }
+                case 3: {
+
+                    string product;
+                    int quantity;
+                    double price;
+                    cout << "Enter product to sell (e.g., sugar): ";
+                    cin >> product;
+                    cout << "Enter quantity: ";
+                    cin >> quantity;
+                    cout << "Enter price per ton: ";
+                    cin >> price;
+                    sellToMarket(product, quantity, price);
+                    break;
+                }
+                case 4:
+
+                    displayInventory(fact[fid-101].factname);
+                    break;
+                case 5:
+
+                    displaySales(fact[fid-101].factname);
+                    break;
+                case 6:
+                     {
+                    string staffName;
+                    cout << "Enter staff name to add: ";
+                    cin >> staffName;
+                    addStaff(staffName);
+                    break;
+                }
+                case 7:
+                    {
+
+                    string staffName;
+                    cout << "Enter staff name to remove: ";
+                    cin >> staffName;
+                    removeStaff(staffName);
+                    break;
+                }
+                case 8:
+                    displayStaff(fact[fid-101].factname);
+                    break;
+                case 9:
+                    {
+                    int quantityProduced, inputCane;
+                    cout << "Enter quantity of sugar produced (in tons): ";
+                    cin >> quantityProduced;
+                    cout << "Enter quantity of sugarcane used (in tons): ";
+                    cin >> inputCane;
+                    calculateProductionEfficiency(quantityProduced, inputCane);
+                    break;
+                }
+                case 10:
+                    // Display farmers associated with the factory
+
+                    displayFarmers(fid);
+                    break;
+                case 11:
+
+                    calculateRevenue(fact[fid-101].factname);
+                    break;
+                case 12:
+
+                    cout << "Exiting...\n";
+                    break;
+                default:
+
+                    cout << "Invalid choice. Please try again.\n";
+            }
+
+        }
+        while (choice != 12);
+
+    }
+    catch (const exception& e) {
+        cout << "Error: " << e.what() << endl;
+
+    }
+
+    return ;
+}
+int module3()
+{
+    displayWelcomeMessage();
+
+    vector<Farmer> farmers =
+    {
+        {"Abhishek", 1, 150, 101, "North"},
+
+        {"Rahul", 2, 180, 102, "East"},
+
+        {"Sita", 3, 120, 103, "West"},
+
+        {"Rajesh", 4, 170, 104, "South"},
+
+        {"Anita", 5, 180, 105, "North"},
+
+        {"Vikas", 6, 200, 106, "East"},
+
+        {"Sunita", 7, 180, 107, "West"},
+
+        {"Deepak", 8, 170, 108, "South"},
+
+        {"Pooja", 9, 150, 109, "North"},
+
+        {"Arun", 10, 200, 110, "East"},
+
+        {"Kiran", 11, 160, 111, "West"},
+
+        {"Manoj", 12, 170, 112, "South"},
+
+        {"Geeta", 13, 190, 113, "North"},
+
+        {"Nitin", 14, 160, 114, "East"},
+
+        {"Ramesh", 15, 180, 115, "West"},
+
+        {"Neha", 16, 140, 116, "South"},
+
+        {"Amit", 17, 170, 117, "North"},
+
+        {"Sneha", 18, 200, 118, "East"},
+
+        {"Vivek", 19, 140, 119, "West"},
+
+        {"Rohit", 20, 170, 120, "South"},
+
+        {"Prakash", 21, 150, 121, "North"},
+
+        {"Meera", 22, 150, 122, "East"},
+
+        {"Sanjay", 23, 140, 123, "West"},
+
+        {"Anjali", 24, 160, 124, "South"},
+
+        {"Kailash", 25, 170, 125, "North"},
+
+        {"Tina", 26, 160, 126, "East"},
+
+        {"Varun", 27, 160, 101, "West"},
+
+        {"Asha", 28, 180, 102, "South"},
+
+        {"Ravi", 29, 120, 103, "North"},
+
+        {"Komal", 30, 160, 104, "East"},
+
+        {"Shankar", 31, 180, 105, "West"},
+
+        {"Payal", 32, 200, 106, "South"}
+
+    };
+
+    Factory factory;
+
+    FactoryDetails factoryDetails;
+
+    TotalAmountCalculator totalCalculator;
+
+    //ComplaintManager complaintManager;
+
+    //FeedbackManager feedbackManager;
+
+    int choice;
+    while (true)
+
+    {
+
+        cout << "\nMain Menu:\n";
+        cout << "1. Display Factory Rates\n";
+        cout << "2. View Farmers by Factory\n";
+        cout << "3. View Farmers by Region\n";
+        cout << "4. Submit Complaint\n";
+        cout << "5. Submit Feedback\n";
+        cout << "6. Calculate Total Amount for Factory\n";
+        cout << "7. Calculate Total Amount for Region\n";
+        cout << "8. Display Detailed Report\n";
+        cout << "9. SortFarmersByTotalAmount\n";
+        cout << "10. Exit\n";
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            factoryDetails.displayFactories();
+            break;
+
+        case 2:{
+            int factoryID;
+            cout << "\nEnter Factory ID: ";
+            cin >> factoryID;
+            factory.displayFarmersByFactoryID(farmers, factoryID);
+            break;
+        }
+
+        case 3:{
+            string region;
+                cout << "\nEnter Region: ";
+                cin >> region;
+                displayFarmersByRegion(farmers, region, factory);
+
+                break;
+        }
+
+        case 4:{
+            ComplaintSystem system;
+    int choice;
+
+    while (true) {
+        cout << "\nComplaint System Menu\n";
+        cout << "1. Add Complaint\n";
+        cout << "2. Display All Complaints\n";
+        cout << "3. Update Complaint Status\n";
+        cout << "4. Delete Complaint\n";
+        cout << "5. Filter Complaints by Status\n";
+        cout << "6. Sort Complaints by Date\n";
+        cout << "7. Display Complaints by Farmer\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore(); // Clear newline left in buffer
+
+        switch (choice) {
+        case 1: {
+            string farmerName, description, status, date;
+            cout << "Enter Farmer Name: ";
+            getline(cin, farmerName);
+            cout << "Enter Complaint Description: ";
+            getline(cin, description);
+            cout << "Enter Complaint Status (Pending/Resolved): ";
+            getline(cin, status);
+            cout << "Enter Complaint Date (YYYY-MM-DD): ";
+            getline(cin, date);
+            system.addComplaint(farmerName, description, status, date);
+            cout << "Complaint added successfully!\n";
+            break;
+        }
+        case 2:
+            system.displayAllComplaints();
+            break;
+        case 3: {
+            int id;
+            string newStatus;
+            cout << "Enter Complaint ID to update: ";
+            cin >> id;
+            cin.ignore();
+            cout << "Enter new status (Pending/Resolved): ";
+            getline(cin, newStatus);
+            if (system.updateComplaintStatus(id, newStatus)) {
+                cout << "Complaint status updated successfully!\n";
+            } else {
+                cout << "Complaint ID not found.\n";
+            }
+            break;
+        }
+        case 4: {
+            int id;
+            cout << "Enter Complaint ID to delete: ";
+            cin >> id;
+            if (system.deleteComplaint(id)) {
+                cout << "Complaint deleted successfully!\n";
+            } else {
+                cout << "Complaint ID not found.\n";
+            }
+            break;
+        }
+        case 5: {
+            string status;
+            cout << "Enter status to filter by (Pending/Resolved): ";
+            cin.ignore();
+            getline(cin, status);
+            vector<Complaint> filtered = system.filterComplaintsByStatus(status);
+            if (filtered.empty()) {
+                cout << "No complaints found with status: " << status << endl;
+            } else {
+                for (const auto& complaint : filtered) {
+                    complaint.displayComplaint();
+                }
+            }
+            break;
+        }
+        case 6:
+            system.sortComplaintsByDate();
+            cout << "Complaints sorted by date.\n";
+            system.displayAllComplaints();
+            break;
+        case 7: {
+            string farmerName;
+            cout << "Enter Farmer Name to search: ";
+            cin.ignore();
+            getline(cin, farmerName);
+            system.displayComplaintsByFarmer(farmerName);
+            break;
+        }
+        case 8:
+            cout << "Exiting the system. Goodbye!\n";
+            exit(1) ;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
+        case 5:{
+                FeedbackSystem system;
+    int choice;
+
+    while (true) {
+        cout << "\nFeedback System Menu\n";
+        cout << "1. Add Factory Feedback\n";
+        cout << "2. Add Farmer Feedback\n";
+        cout << "3. Add Truck Feedback\n";
+        cout << "4. Display All Feedbacks\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
+        case 1:
+            system.receiveFactoryFeedback();
+            break;
+        case 2:
+            system.receiveFarmerFeedback();
+            break;
+        case 3:
+            system.receiveTruckFeedback();
+            break;
+        case 4:
+            system.displayAllFeedbacks();
+            break;
+        case 5:
+            cout << "Exiting system. Goodbye!\n";
+            exit(1);
+        default:
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
+
+
+        case 6:
+            totalCalculator.calculateTotalAmount(farmers, factory);
+            break;
+
+        case 7:{
+            string region;
+            cout << "Enter region to calculate total: ";
+            cin >> region;
+            totalCalculator.generatePaymentReport(farmers, factory);
+            break;
+        }
+
+        case 8:
+            factoryDetails.displayDetailedReport(farmers, factory);
+            break;
+
+        case 9:
+            totalCalculator.sortFarmersByTotalAmount(farmers,factory);
+            break;
+
+        case 10:
+            cout << "Exiting program...\n";
+            return 0;
+
+        default:
+            cout << "Invalid choice, please try again.\n";
+            break;
+        }
+
+    }
+
+    return 0;
+}
+
+
+int main()
+{
+    welcome("");
+    int choice;
+    while(1){
+    cout << "1.FARMER \n2.TEAM FACTORY \n3.DRIVERS\n4.FEEDBACK AND COMPLAINT\n5.EXIT\nENTER YOUR CHOICE : ";
+    cin >> choice;
+
+
+    switch (choice)
+    {
+        case 1:
+            farmer();
+            break;
+        case 2:cfactory();
+            break;
+        case 3:trucktor();
+            break;
+        case 4:module3();
+            break;
+        case 5: return 0;
+        default:
+            cout << "Enter a valid choice.\n";
+    }}
+    return 0;
+
+}

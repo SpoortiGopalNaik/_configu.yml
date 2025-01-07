@@ -1,4 +1,4 @@
-# portpolio.github.io
+# SUGARCANE MANAGEMENT SYSTEM.github.io
 ## Portfolio
 
 ### Hello, I'm [Spoorti G Naik] 👋
